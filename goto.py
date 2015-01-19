@@ -82,7 +82,7 @@ def goto(ctx, add, alias, target):
     elif alias != 'currentdir':
         if alias in dictionary:
             entry = dictionary[alias]
-            print('jumping to ',entry)
+            print('jumping to',entry)
             os.chdir(entry)
         elif alias == 'hell':
             print("Could not locate C:\Documents and settings")
