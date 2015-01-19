@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @python3
 # @author sabot <sabot@inuits.eu>
-"""Go to any directory without typing a bunch of slashes"""
+"""Go to a without typing a bunch of slashes"""
 import sys
 import os
 import json
@@ -17,24 +17,35 @@ def show_version(ctx, param, value):
     click.echo('Goto %s' % __VERSION__)
     ctx.exit() # quit the program
 
-def add_alias(ctx, param, value):
+def add_entry(dictionary, filepath, path, alias):
     """Add a new path alias."""
-    print("I'll get right on that")
+    dictionary[alias] = path
 
-def get_dictionary():
-    filepath = os.path.join(os.getenv('HOME'), '.g2dict')
+    try:
+        jsondata = json.dumps(dictionary, sort_keys=True)
+        fd = open(filepath, 'w')
+        fd.write(jsondata)
+        fd.close()
+    except Exception as e:
+        print('Error writing to dictionary file: ', str(e))
+        pass
+
+def get_entries(filename):
+    """Get the alias entries in json."""
     returndata = {}
-    if os.path.exists(filepath):
+    if os.path.exists(filename) and os.path.getsize(filename) > 0:
         try:
-            dictfile = open(filepath, 'r')
-            entries = dictfile.read()
-            dictfile.close()
-            returndata = json.read(entries)
-        except:
-            print('Error reading dictionary file', sys.exc_info()[0])
+            fd = open(filename, 'r')
+            entries = fd.read()
+            fd.close()
+            returndata = json.loads(entries)
+
+        except Exception as e:
+            print('Error reading dictionary file: ', str(e))
+            pass
     else:
-        print('Dictionary file not found - spawning new one in', filepath)
-        newfile = open(filepath,'w')
+        print('Dictionary file not found or empty- spawning new one in', filename)
+        newfile = open(filename,'w')
         newfile.write('')
         newfile.close()
 
@@ -48,12 +59,16 @@ def get_dictionary():
 @click.option('--add', '-a', help="Add a new path alias") 
 @click.pass_context
 def goto(ctx, add):
-    '''Go to any directory in your filesystem'''
-    dictionary = get_dictionary()
+    '''Go to any directory in your filesystem''' 
 
-    print("this is where the magic happens.\nCome back a little later.")
+    # load dictionary
+    filepath = os.path.join(os.getenv('HOME'), '.g2dict')
+    dictionary = get_entries(filepath)
+
     if add:
-        print('Add parameter detected')
+        current_dir = os.getcwd()
+        print("Adding entry {} with alias {} ".format(current_dir, add))
+        add_entry(dictionary, filepath, current_dir, add)
 
 if __name__ == '__main__':
     goto()
