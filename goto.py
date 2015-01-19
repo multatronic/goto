@@ -3,6 +3,7 @@
 # @author sabot <sabot@inuits.eu>
 """Go to any directory without typing a bunch of slashes"""
 import sys
+import os
 import json
 import click
 
@@ -20,6 +21,26 @@ def add_alias(ctx, param, value):
     """Add a new path alias."""
     print("I'll get right on that")
 
+def get_dictionary():
+    filepath = os.path.join(os.getenv('HOME'), '.g2dict')
+    returndata = {}
+    if os.path.exists(filepath):
+        try:
+            dictfile = open(filepath, 'r')
+            entries = dictfile.read()
+            dictfile.close()
+            returndata = json.read(entries)
+        except:
+            print('Error reading dictionary file', sys.exc_info()[0])
+    else:
+        print('Dictionary file not found - spawning new one in', filepath)
+        newfile = open(filepath,'w')
+        newfile.write('')
+        newfile.close()
+
+    return returndata
+        
+
 @click.command()
 @click.option('--version', '-v', is_flag=True, is_eager=True,
               help='Print version information and exit.', expose_value=False,
@@ -28,11 +49,11 @@ def add_alias(ctx, param, value):
 @click.pass_context
 def goto(ctx, add):
     '''Go to any directory in your filesystem'''
-    dictionary_file = os.path.join(os.getenv('HOME'), '.g2dict')
+    dictionary = get_dictionary()
 
     print("this is where the magic happens.\nCome back a little later.")
     if add:
-        print('uh yeah dude')
+        print('Add parameter detected')
 
 if __name__ == '__main__':
     goto()
