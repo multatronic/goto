@@ -56,9 +56,10 @@ def get_entries(filename):
 @click.option('--version', '-v', is_flag=True, is_eager=True,
               help='Print version information and exit.', expose_value=False,
               callback=show_version)
-@click.option('--add', '-a', help="Add a new path alias") 
+@click.option('--add', '-a', help="Add a new path alias")
+@click.argument('alias', default='currentdir')
 @click.pass_context
-def goto(ctx, add):
+def goto(ctx, add, alias):
     '''Go to any directory in your filesystem''' 
 
     # load dictionary
