@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @python3
 # @author sabot <sabot@inuits.eu>
-"""Go to a without typing a bunch of slashes"""
+"""Switch directories without wearing out your slash key"""
 import sys
 import os
 import json
@@ -50,7 +50,6 @@ def get_entries(filename):
         newfile.close()
 
     return returndata
-        
 
 @click.command()
 @click.option('--version', '-v', is_flag=True, is_eager=True,
