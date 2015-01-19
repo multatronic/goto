@@ -19,6 +19,7 @@ def show_version(ctx, param, value):
 
 def add_entry(dictionary, filepath, path, alias):
     """Add a new path alias."""
+    print("Adding alias {} for path {} ".format(alias,path))
     dictionary[alias] = path
 
     try:
@@ -56,19 +57,37 @@ def get_entries(filename):
               help='Print version information and exit.', expose_value=False,
               callback=show_version)
 @click.option('--add', '-a', help="Add a new path alias")
+@click.option('--target', '-t', help="Alias target path instead of the current directory")
 @click.argument('alias', default='currentdir')
 @click.pass_context
-def goto(ctx, add, alias):
+def goto(ctx, add, alias, target):
     '''Go to any directory in your filesystem''' 
 
     # load dictionary
     filepath = os.path.join(os.getenv('HOME'), '.g2dict')
     dictionary = get_entries(filepath)
 
+    # add a path alias to the dictionary
     if add:
-        current_dir = os.getcwd()
-        print("Adding entry {} with alias {} ".format(current_dir, add))
-        add_entry(dictionary, filepath, current_dir, add)
+        if target: # don't use current dir as target
+            if not os.path.exists(target):
+                print('Target path not found!')
+                ctx.exit()
+            else:
+                add_entry(dictionary, filepath, target, add)
+        else: # use current dir as target
+            current_dir = os.getcwd()
+            add_entry(dictionary, filepath, current_dir, add)
+
+    elif alias != 'currentdir':
+        if alias in dictionary:
+            entry = dictionary[alias]
+            print('jumping to ',entry)
+            os.chdir(entry)
+        elif alias == 'hell':
+            print("Could not locate C:\Documents and settings")
+        else:
+            print("Alias not found in dictionary - did you forget to add it?")
 
 if __name__ == '__main__':
     goto()
