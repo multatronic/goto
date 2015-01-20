@@ -24,12 +24,12 @@ How to install:
 ```   
 
 
-Add a new path alias with with `g2dict -a [ALIAS] [-t TARGET]`.  
-If no target is supplied, the current directory will be
-assumed. 
+Add a new path alias with with `g2dict -a [ALIAS] [-t TARGET]`. The target can be relative to your current directory. If no target is supplied, the current directory will be assumed. 
 
-Entries are stored in a json file `.g2dict` in your home folder. You can safely delete it (you will lose your
-aliases ofcourse). G2dict will create it if it isn't there.  
+You can add an alias with spaces by putting quotes around it, providing you also use them when running the goto command.
+
+
+Entries are stored in a json file `.g2dict` in your home folder. G2dict will create it if it isn't there, so you can safely delete it (you will lose your aliases ofcourse). 
 
 jump to a directory with `goto [ALIAS]`, you can jump back to the previous directory with 'goto prev'
 

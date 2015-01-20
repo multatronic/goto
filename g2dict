@@ -19,6 +19,8 @@ def show_version(ctx, param, value):
 
 def add_entry(dictionary, filepath, path, alias, silent=False):
     """Add a new path alias and dump the dictionary to json"""
+
+    path = os.path.abspath(path) # get absolute path to target
     if not silent:
         print("Adding alias {} for path {} ".format(alias,path))
     dictionary[alias] = path
