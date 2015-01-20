@@ -15,10 +15,10 @@ A simple python module to help preserve your sanity when working in multiple dir
 
 How to install:
 ```
-1) put g2dict in your /usr/local/bin or whatever 
+1) put g2dict in your /usr/local/bin or wherever 
    and symlink it to /bin/g2dict so you can use it anywhere
 
-2) copy the contents of goto.sh to your .bashrc/.zshrc/... file 
+2) copy the contents of goto.sh to your .bashrc (or .zshrc or whatever) file 
 
 3) open a new shell 
 ```   
