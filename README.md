@@ -16,7 +16,7 @@ A simple python module to help preserve your sanity when working in multiple dir
 How to install:
 ```
 1) put g2dict in your /usr/local/bin or whatever 
-   and symlink it to /bin/g2dictso you can use it anywhere
+   and symlink it to /bin/g2dict so you can use it anywhere
 
 2) copy the contents of goto.sh to your .bashrc/.zshrc/... file 
 
