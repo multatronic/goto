@@ -7,7 +7,7 @@ import os
 import json
 import click
 
-__VERSION__ = '0.0.1'
+__VERSION__ = '0.0.2'
 
 # 3 params are needed for click callback
 def show_version(ctx, param, value):
@@ -82,8 +82,7 @@ def goto(ctx, add, alias, target):
     elif alias != 'currentdir':
         if alias in dictionary:
             entry = dictionary[alias]
-            print('jumping to',entry)
-            os.chdir(entry)
+            print(entry)
         elif alias == 'hell':
             print("Could not locate C:\Documents and settings")
         else:
