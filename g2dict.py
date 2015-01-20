@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @python3
 # @author sabot <sabot@inuits.eu>
-"""Switch directories without wearing out your slash key"""
+"""Manage a dictionary of directory alias/path pairs"""
 import sys
 import os
 import json
@@ -18,7 +18,7 @@ def show_version(ctx, param, value):
     ctx.exit() # quit the program
 
 def add_entry(dictionary, filepath, path, alias):
-    """Add a new path alias."""
+    """Add a new path alias and dump the dictionary to json"""
     print("Adding alias {} for path {} ".format(alias,path))
     dictionary[alias] = path
 
@@ -32,7 +32,7 @@ def add_entry(dictionary, filepath, path, alias):
         pass
 
 def get_entries(filename):
-    """Get the alias entries in json."""
+    """Load the json alias entries"""
     returndata = {}
     if os.path.exists(filename) and os.path.getsize(filename) > 0:
         try:
@@ -59,16 +59,22 @@ def get_entries(filename):
 @click.option('--add', '-a', help="Add a new path alias")
 @click.option('--target', '-t', help="Alias target path instead of the current directory")
 @click.argument('alias', default='currentdir')
+@click.option('--poll', '-p', help="Check if alias exists")
 @click.pass_context
-def goto(ctx, add, alias, target):
-    '''Go to any directory in your filesystem''' 
+def g2dict(ctx, add, poll, alias, target):
+    '''Manage a dictionary with directory alias/path pairs in it''' 
 
     # load dictionary
     filepath = os.path.join(os.getenv('HOME'), '.g2dict')
     dictionary = get_entries(filepath)
 
-    # add a path alias to the dictionary
-    if add:
+    
+    if poll: # check if alias exists (used by shellscript)
+        if poll in dictionary:
+            print('True')
+        else: 
+            print('False')
+    elif add: # add a path alias to the dictionary
         if target: # don't use current dir as target
             if not os.path.exists(target):
                 print('Target path not found!')
@@ -83,10 +89,10 @@ def goto(ctx, add, alias, target):
         if alias in dictionary:
             entry = dictionary[alias]
             print(entry)
-        elif alias == 'hell':
-            print("Could not locate C:\Documents and settings")
-        else:
-            print("Alias not found in dictionary - did you forget to add it?")
+        #elif alias == 'hell':
+        #    print("Could not locate C:\Documents and settings")
+        #else:
+        #    print("Alias not found in dictionary - did you forget to add it?")
 
 if __name__ == '__main__':
-    goto()
+    g2dict()
