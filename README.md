@@ -31,5 +31,5 @@ You can add an alias with spaces by putting quotes around it, providing you also
 
 Entries are stored in a json file `.g2dict` in your home folder. G2dict will create it if it isn't there, so you can safely delete it (you will lose your aliases ofcourse). 
 
-jump to a directory with `goto [ALIAS]`, you can jump back to the previous directory with 'goto prev'
+jump to a directory with `goto [ALIAS]`, you can jump back to the previous directory with `goto prev`
 
