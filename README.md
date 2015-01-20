@@ -8,9 +8,9 @@ requirements:
     * python click module
 
 How to install: 
-    - put g2dict in your /usr/local/bin or whatever, symlink it to /bin/g2dict so you can use it anywhere
-    - copy the contents of goto.sh to your .bashrc/.zshrc/... file 
-    - open a new shell 
+    1) put g2dict in your /usr/local/bin or whatever, symlink it to /bin/g2dict so you can use it anywhere
+    2) copy the contents of goto.sh to your .bashrc/.zshrc/... file 
+    3) open a new shell 
    
 
 
