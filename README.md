@@ -3,7 +3,7 @@ GOTO
 
 A simple python module to help preserve your sanity when working in multiple directories in the command line.
 
-####requirements:#### 
+####requirements: 
 
 - python3 
 
