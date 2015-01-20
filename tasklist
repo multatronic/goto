@@ -1,1 +1,2 @@
-- give shellscript options, so users don't have to call g2dict anymore
+- give the shellscript options, so users don't have to call g2dict anymore
+- add an option to show all current dictionary entries
