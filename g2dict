@@ -48,7 +48,7 @@ def get_entries(filename):
             print('Error reading dictionary file: ', str(e))
             pass
     else:
-        print('Dictionary file not found or empty- spawning new one in', filename)
+        print('Dictionary file not found or empty - spawning new one in', filename)
         newfile = open(filename,'w')
         newfile.write('')
         newfile.close()
@@ -92,10 +92,6 @@ def g2dict(ctx, add, poll, alias, target):
             entry = dictionary[alias]
             add_entry(dictionary, filepath, current_dir, 'prev', True) #store directory we came from
             print(entry)
-        #elif alias == 'hell':
-        #    print("Could not locate C:\Documents and settings")
-        #else:
-        #    print("Alias not found in dictionary - did you forget to add it?")
 
 if __name__ == '__main__':
     g2dict()
