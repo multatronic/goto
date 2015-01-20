@@ -31,5 +31,5 @@ assumed.
 Entries are stored in a json file `.g2dict` in your home folder. You can safely delete it (you will lose your
 aliases ofcourse). G2dict will create it if it isn't there.  
 
-jump to a directory with `goto [ALIAS]`
+jump to a directory with `goto [ALIAS]`, you can jump back to the previous directory with 'goto prev'
 

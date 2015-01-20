@@ -17,9 +17,10 @@ def show_version(ctx, param, value):
     click.echo('Goto %s' % __VERSION__)
     ctx.exit() # quit the program
 
-def add_entry(dictionary, filepath, path, alias):
+def add_entry(dictionary, filepath, path, alias, silent=False):
     """Add a new path alias and dump the dictionary to json"""
-    print("Adding alias {} for path {} ".format(alias,path))
+    if not silent:
+        print("Adding alias {} for path {} ".format(alias,path))
     dictionary[alias] = path
 
     try:
@@ -67,7 +68,7 @@ def g2dict(ctx, add, poll, alias, target):
     # load dictionary
     filepath = os.path.join(os.getenv('HOME'), '.g2dict')
     dictionary = get_entries(filepath)
-
+    current_dir = os.getcwd()
     
     if poll: # check if alias exists (used by shellscript)
         if poll in dictionary:
@@ -82,12 +83,12 @@ def g2dict(ctx, add, poll, alias, target):
             else:
                 add_entry(dictionary, filepath, target, add)
         else: # use current dir as target
-            current_dir = os.getcwd()
             add_entry(dictionary, filepath, current_dir, add)
 
     elif alias != 'currentdir':
         if alias in dictionary:
             entry = dictionary[alias]
+            add_entry(dictionary, filepath, current_dir, 'prev', True) #store directory we came from
             print(entry)
         #elif alias == 'hell':
         #    print("Could not locate C:\Documents and settings")
