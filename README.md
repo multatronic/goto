@@ -1,7 +1,7 @@
 GOTO
 ====
 
-A simple python module to help preserve your sanity when working in multiple directories in the command line.
+A simple python/bashscript combo to bookmark directories in the command line.
 
 ####requirements: 
 
@@ -15,13 +15,12 @@ A simple python module to help preserve your sanity when working in multiple dir
 
 How to install:
 ```
-1) put g2dict in your /usr/local/bin or wherever 
-   and symlink it to /bin/g2dict so you can use it anywhere
+1) symlink g2dict to any of your $PATH directories so you can use it anywhere
 
-2) copy the contents of goto.sh to your .bashrc (or .zshrc or whatever) file 
+2) Append the contents of goto.sh to your .bashrc (or .zshrc or whatever) file
 
-3) open a new shell 
-```   
+3) open a new shell
+```  
 
 
 Add a new path alias with with `g2dict -a [ALIAS] [-t TARGET]`. The target can be relative to your current directory. If no target is supplied, the current directory will be assumed. 
