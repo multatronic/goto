@@ -7,28 +7,14 @@ import os
 import json
 import click
 
-__VERSION__ = '0.0.2'
-
-# 3 params are needed for click callback
-def show_version(ctx, param, value):
-    """Print version information and exit."""
-    if not value:
-        return
-    click.echo('Goto %s' % __VERSION__)
-    ctx.exit() # quit the program
+# path to dictionary file
+filepath = os.path.join(os.getenv('HOME'), '.g2dict')
 
 def list_entries(dictionary):
      for key in dictionary:
          print("{0:15}:{1}".format(key,dictionary[key]))
 
-def add_entry(dictionary, filepath, path, alias, silent=False):
-    """Add a new path alias and dump the dictionary to json"""
-
-    path = os.path.abspath(path) # get absolute path to target
-    if not silent:
-        print("Adding alias {} for path {} ".format(alias,path))
-    dictionary[alias] = path
-
+def save_dictionary(dictionary):
     try:
         jsondata = json.dumps(dictionary, sort_keys=True)
         fd = open(filepath, 'w')
@@ -37,6 +23,36 @@ def add_entry(dictionary, filepath, path, alias, silent=False):
     except Exception as e:
         print('Error writing to dictionary file: ', str(e))
         pass
+
+
+def add_entry(dictionary, path, alias, silent=False):
+    """Add a new path alias and dump the dictionary to json"""
+
+    path = os.path.abspath(path) # get absolute path to target
+    if not silent:
+        print("Adding alias {} for path {} ".format(alias,path))
+        dictionary[alias] = path
+        save_dictionary(dictionary)
+
+def delete_entry(dictionary, key):
+    duplicate = dictionary
+    if key in dictionary:
+        print('Removing alias {0} with path {1}'.format(key,dictionary[key]))
+        del dictionary[key]
+        save_dictionary(dictionary)
+    else:
+        print('This alias does not exist!')
+
+def scrub_entries(dictionary):
+    keylist = []
+    for key in dictionary:
+        if not os.path.exists(dictionary[key]):
+            print('Scrubbing alias {0} with dead path {1}'.format(key, dictionary[key]))
+            keylist.append(key)
+    for deadkey in keylist:
+        del dictionary[deadkey]
+    del keylist
+    save_dictionary(dictionary)
 
 def get_entries(filename):
     """Load the json alias entries"""
@@ -60,26 +76,24 @@ def get_entries(filename):
     return returndata
 
 @click.command()
-@click.option('--version', '-v', is_flag=True, is_eager=True,
-              help='Print version information and exit.', expose_value=False,
-              callback=show_version)
 @click.option('--add', '-a', help="Add a new path alias")
 @click.option('--target', '-t', help="Alias target path instead of the current directory")
 @click.argument('alias', default='currentdir')
+@click.option('--delete','-d')
+@click.option('--scrub','-s', is_flag=True)
 @click.option('--poll', '-p', help="Check if alias exists")
 @click.option('--listentries', '-l', is_flag=True, help='List dictionary entries')
 @click.pass_context
-def g2dict(ctx, add, poll, alias, target, listentries):
+def g2dict(ctx, add, poll, alias, target, delete, scrub, listentries):
     '''Manage a dictionary with directory alias/path pairs in it''' 
 
     # load dictionary
-    filepath = os.path.join(os.getenv('HOME'), '.g2dict')
     dictionary = get_entries(filepath)
     current_dir = os.getcwd()
    
     if listentries:
         list_entries(dictionary)
-        exit();
+        exit()
     if poll: # check if alias exists (used by shellscript)
         if poll in dictionary:
             print('True')
@@ -91,14 +105,18 @@ def g2dict(ctx, add, poll, alias, target, listentries):
                 print('Target path not found!')
                 ctx.exit()
             else:
-                add_entry(dictionary, filepath, target, add)
+                add_entry(dictionary, target, add)
         else: # use current dir as target
-            add_entry(dictionary, filepath, current_dir, add)
-
+            add_entry(dictionary, current_dir, add)
+    elif scrub:
+        scrub_entries(dictionary)
+        exit()
+    elif delete:
+        delete_entry(dictionary,delete)
     elif alias != 'currentdir':
         if alias in dictionary:
             entry = dictionary[alias]
-            add_entry(dictionary, filepath, current_dir, 'prev', True) #store directory we came from
+            add_entry(dictionary, current_dir, 'prev', True) #store directory we came from
             print(entry)
 
 if __name__ == '__main__':

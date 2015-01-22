@@ -1,4 +1,2 @@
-- read options in the shellscript, so users don't have to call g2dict directly anymore
-- add an option to show all current dictionary entries
 - add an option to remove all dead entries (i.e. paths that don't exist anymore)
 

@@ -28,7 +28,6 @@ $0 -a ALIAS [-t TARGET] : add alias (no target = current directory)"
               else # alias name not empty 
                     echo "$(g2dict -d $2)"
               fi
-              ;;
         # add a new path alias to the dictionary
          "-a")  if [[ -z "$2" ]]; then # alias name empty?
                     echo "You did not supply a name for the alias"
@@ -68,4 +67,3 @@ $0 -a ALIAS [-t TARGET] : add alias (no target = current directory)"
         esac
     fi
 }
-
