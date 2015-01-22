@@ -34,4 +34,6 @@ jump to a directory with `goto [ALIAS]`, you can jump back to the previous direc
 
 delete entries with `goto -d [ALIAS]`
 
-scrub dead links with `goto -s` 
+scrub dead links with `goto -s`
+
+print list of commands with `goto -h`
