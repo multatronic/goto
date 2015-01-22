@@ -1,0 +1,55 @@
+# Add this to your .bashrc/.zshrc/ or whatever
+function goto() {
+    USAGE="Usage: $0 ALIAS"
+
+    if [[ $1 == "" ]]; then 
+        echo "You did not supply any parameters, but that's okay - you're only human"
+    else
+        case $1 in
+        # print dictionary entries
+        "-l") echo "$(g2dict -l)"
+              return
+              ;;
+
+        # print usage information
+        "-h") echo "$USAGE"
+              return
+              ;;
+        
+        # add a new path alias to the dictionary
+        "-a") if [ -z $2]; then # alias name supplied?
+                if [-z $3]; then # second param supplied?
+                    if [$3 == "-t"]; then # correct flag?
+                        if [ -e $4]; then # target path exists?
+                            echo "$(g2dict -a $2 -t $4)"
+                        else # target path does not exist
+                            echo "target path does not exist!"
+                            return
+                        fi
+                    else # incorrect second flag
+                        usage
+                        return
+                    fi
+                else # target param not supplied
+                    echo "$(g2dict -a $2)" # add current dir
+                    return
+                fi
+              else # no alies name supplied
+                echo "You did not supply a name for the alias"
+                return
+                ;;
+              fi
+        
+        # anything else: jump to target
+        *) # Check if the dictionary entry exists
+            if [[ $(g2dict -p $1) == "True" ]]; then 
+                echo "Jumping to" $1
+                cd $(g2dict $1)
+            else
+                echo "This path alias was not found in the dictionary"
+            fi
+            return
+            ;;
+        esac
+    fi
+}
