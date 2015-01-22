@@ -17,7 +17,7 @@ How to install:
 ```
 1) symlink g2dict to any of your $PATH directories so you can use it anywhere
 
-2) Append the contents of goto.sh to your .bashrc (or .zshrc or whatever) file. 
+2) Append the contents of goto to your .bashrc (or .zshrc or whatever) file. 
 
 3) open a new shell
 ```  
