@@ -57,7 +57,8 @@ $0 -a ALIAS [-t TARGET] : add alias (no target = current directory)"
         
         # # anything else: jump to target
         *) # Check if the dictionary entry exists
-            if [[ $(g2dict -p $1) == "True" ]]; then 
+            if [[ $(g2dict -p $1) == "True" ]]; then
+                g2dict -a prev
                 echo "Jumping to" $1
                 cd $(g2dict $1)
             else
